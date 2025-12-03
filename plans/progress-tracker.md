@@ -4,7 +4,7 @@ This plan precedes implementation work and tracks every major deliverable for th
 
 | # | Task | Details | Expected Result | Status |
 |---|------|---------|-----------------|--------|
-| 1 | Repository bootstrap | Initialize React + TypeScript app via Vite, configure npm scripts, and commit the clean scaffold. | Running dev server (`npm run dev`) with placeholder layout and lint/test scripts available. | In Progress |
+| 1 | Repository bootstrap | Initialize React + TypeScript app via Vite, configure npm scripts, and commit the clean scaffold. | Running dev server (`npm run dev`) with placeholder layout and lint/test scripts available. | Completed |
 | 2 | Tooling & quality gates | Add ESLint, Prettier, stylelint/Tailwind config, TypeScript strict mode, Husky/pre-commit hooks, and CI workflow to run lint/test on push. | Automated lint/test pipeline that blocks non-compliant commits and PRs. | Not Started |
 | 3 | State management foundation | Introduce Zustand (or Redux Toolkit) store to manage script content, playback speed, and UI preferences with typed selectors. | Shared state layer with initial actions/selectors plus persistence scaffolding. | Not Started |
 | 4 | Core teleprompter view | Build the main reading pane with adjustable font size, line spacing, and responsive layout; implement keyboard shortcuts for scroll speed and pause/resume. | Smooth autoscroll experience verified in-browser with accessible controls. | Not Started |
@@ -21,7 +21,7 @@ This plan precedes implementation work and tracks every major deliverable for th
 - **1.1 Choose tooling** — Decide between Vite and Next.js, confirm npm vs pnpm, and document rationale. _Result:_ Selected Vite + React + TypeScript with npm (web-only focus). _Status:_ Completed.
 - **1.2 Scaffold project** — Run `npm create vite@latest` (React + TS), remove boilerplate, and verify `npm run dev`. _Result:_ Vite React-TS scaffold copied into repo, dependencies installed, and dev server verified locally. _Status:_ Completed.
 - **1.3 Configure paths & aliases** — Add `tsconfig.json` paths (e.g., `@/components`) and mirror them in Vite config. _Result:_ `@/*` alias resolves to `src/*` in both TS and Vite builds. _Status:_ Completed.
-- **1.4 Initial commit** — Stage scaffold, ensure `.gitignore` covers `node_modules` and `.env*`, and create `feat: bootstrap app` commit. _Result:_ Baseline revision in git history. _Status:_ Not Started.
+- **1.4 Initial commit** — Stage scaffold, ensure `.gitignore` covers `node_modules` and `.env*`, and create `feat: bootstrap app` commit. _Result:_ Baseline revision (`feat: bootstrap web teleprompter`). _Status:_ Completed.
 
 ### 2. Tooling & Quality Gates
 - **2.1 ESLint/Prettier setup** — Install dependencies, add configs, integrate Tailwind plugin, and align with repo style (2 spaces, single quotes). _Result:_ `npm run lint` succeeds/fails appropriately. _Status:_ Not Started.
