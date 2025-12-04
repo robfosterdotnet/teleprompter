@@ -58,6 +58,37 @@ Open the printed localhost URL to view the placeholder teleprompter shell. The d
 - Export the current script as Markdown or JSON—downloads use the script title as the filename.
 - The import/export utilities normalize IDs and timestamps so downstream features (segment navigation, timers, persistence) keep working even with external content.
 
+## AI Script Builder (Azure GPT-5-nano)
+
+The nav pill at the top of the app swaps between the rehearsal teleprompter view and a brand-new **AI Script Builder** workspace. Enter a topic + guidance to generate a script instantly; optionally attach up to five supporting files (PDF, DOCX, PPTX, TXT, Markdown) to give GPT-5-nano richer context. Drafts can be saved, duplicated, or reopened later via the script library drawer and pushed directly into the teleprompter editor.
+
+### Local configuration
+
+1. Create `.env.local` with the Azure resource settings:
+
+   ```bash
+   AZURE_OPENAI_ENDPOINT=https://<your-resource>.openai.azure.com/
+   AZURE_OPENAI_API_KEY=<key>
+   AZURE_OPENAI_API_VERSION=2024-10-01-preview
+   AZURE_OPENAI_DEPLOYMENT=gpt-5-nano
+   ```
+
+2. Run the dev server via Netlify so the serverless function is available:
+
+   ```bash
+   npx netlify dev
+   ```
+
+   This spins up Vite + the `/.netlify/functions/ai-script-builder` endpoint locally.
+
+3. Switch to “AI Builder” in the workspace nav, enter the topic + guidance, optionally drop supporting files, and click **Build script**. Watch streaming output before sending the draft to the teleprompter or saving it in the library.
+
+### Serverless function notes
+
+- Source ingestion happens fully in the browser (with `pdfjs-dist`, `JSZip`, `fast-xml-parser`, and `mammoth`), so uploads never leave the user’s machine until you explicitly trigger generation.
+- The Netlify function summarizes the extracted text, calls Azure OpenAI, and streams structured JSON back as SSE so the UI can show progress + incremental copy.
+- Set the same Azure env vars in Netlify (Site settings → Build & deploy → Environment) so production deploys can generate scripts.
+
 ## Project Status
 
 - **Bootstrap & Tooling (Tasks 1–2):** Completed — Vite scaffold + lint/test/CI stack.
@@ -67,6 +98,7 @@ Open the printed localhost URL to view the placeholder teleprompter shell. The d
 - **Testing & Hardening (Task 8):** Completed — Vitest + RTL coverage ≥80% plus Playwright regression flows.
 - **Deployment Pipeline (Task 9):** Completed — Netlify production target deployed automatically from `main` via GitHub Actions.
 - **Documentation Pass (Task 10):** Completed — README/AGENTS refreshed, deployment + release guides published, changelog initiated.
+- **AI Script Builder (Task 11):** Completed — Workspace nav, file extraction pipeline, Azure GPT-5-nano Netlify function, and persistent draft library with teleprompter handoff.
 
 ## Deployment
 

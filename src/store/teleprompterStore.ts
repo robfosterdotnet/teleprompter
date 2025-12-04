@@ -1,8 +1,7 @@
 import { SAMPLE_SCRIPT } from '@/data/sampleScript'
+import type { Script, SegmentId } from '@/types/script'
 import {
   type PlaybackState,
-  type Script,
-  type SegmentId,
   type TeleprompterPreferences,
   type TeleprompterState,
 } from '@/types/teleprompter'

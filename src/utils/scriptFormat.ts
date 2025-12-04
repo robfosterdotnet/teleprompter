@@ -1,4 +1,4 @@
-import type { Script, Segment } from '@/types/teleprompter'
+import type { Script, Segment } from '@/types/script'
 
 const sanitizeId = (title: string, index: number) =>
   title

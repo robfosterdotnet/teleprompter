@@ -24,6 +24,17 @@ Add these repository secrets so the deploy job can authenticate:
 - `NETLIFY_SITE_ID` — the UUID from your Netlify site dashboard.
 - `NETLIFY_AUTH_TOKEN` — personal access token scoped to “Sites: Deploy”.
 
+### AI Script Builder environment
+
+The Netlify function `ai-script-builder` (Azure OpenAI orchestration) reads the following env vars. Set them in both `.env.local` for local work _and_ in the Netlify site settings so production deploys can generate scripts:
+
+- `AZURE_OPENAI_ENDPOINT`
+- `AZURE_OPENAI_API_KEY`
+- `AZURE_OPENAI_API_VERSION` (defaults to `2024-10-01-preview` if omitted).
+- `AZURE_OPENAI_DEPLOYMENT` (the GPT-5-nano deployment name/ID).
+
+When running locally, use `npx netlify dev` so Vite and the Netlify Functions runtime share the same origin (`/.netlify/functions/ai-script-builder`). The builder UI surfaces friendly errors if the env vars are missing or the function returns a quota/auth failure—check the Netlify logs for deeper context.
+
 ## Local Deployments
 
 Use the Netlify CLI for manual deploys or previews:

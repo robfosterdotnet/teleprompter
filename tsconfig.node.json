@@ -12,6 +12,10 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "noEmit": true,
 
     /* Linting */
@@ -26,6 +30,7 @@
     "vite.config.ts",
     "tailwind.config.ts",
     "playwright.config.ts",
-    "tests/**/*.ts"
+    "tests/**/*.ts",
+    "netlify/functions/**/*.ts"
   ]
 }

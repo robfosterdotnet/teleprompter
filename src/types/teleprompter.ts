@@ -1,24 +1,4 @@
-export type SegmentId = string
-
-export interface Segment {
-  id: SegmentId
-  title: string
-  body: string
-  notes?: string
-  targetDurationSeconds?: number
-}
-
-export interface ScriptMetadata {
-  title: string
-  presenter?: string
-  lastEditedIso: string
-}
-
-export interface Script {
-  id: string
-  metadata: ScriptMetadata
-  segments: Segment[]
-}
+import type { Script, SegmentId } from '@/types/script'
 
 export type ThemeName = 'light' | 'dark' | 'high-contrast'
 

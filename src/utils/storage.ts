@@ -1,4 +1,4 @@
-import type { Script } from '@/types/teleprompter'
+import type { Script } from '@/types/script'
 
 export const SCRIPT_DRAFT_STORAGE_KEY = 'teleprompter-script-draft'
 

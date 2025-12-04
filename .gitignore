@@ -30,3 +30,6 @@ test-results
 # Environment files
 .env
 .env.*
+
+# Local Netlify folder
+.netlify

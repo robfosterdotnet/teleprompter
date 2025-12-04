@@ -1,4 +1,4 @@
-import type { Script } from '@/types/teleprompter'
+import type { Script } from '@/types/script'
 
 export const SAMPLE_SCRIPT: Script = {
   id: 'sample-script',
