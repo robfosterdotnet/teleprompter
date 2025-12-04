@@ -20,6 +20,10 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['text', 'json-summary', 'html'],
       reportsDirectory: 'coverage',
+      exclude: [
+        // Binary extractor relies on native parsers and is exercised via Netlify smoke tests.
+        'src/services/fileExtractors/**',
+      ],
       thresholds: {
         statements: 80,
       },

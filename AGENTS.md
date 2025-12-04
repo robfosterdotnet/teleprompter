@@ -1,5 +1,7 @@
 # Repository Guidelines
 
+This repo powers the Teleprompter + AI Script Builder web app (Vite + React + TypeScript). Core domains live under `src/views/teleprompter` and `src/views/scriptBuilder`, with shared hooks, stores, and utilities coordinating uploads, Azure OpenAI streaming, and presenter controls.
+
 ## Project Structure & Module Organization
 
 Keep application code inside `src/`, grouped by feature (e.g., `src/scroll`, `src/views`, `src/store`). Shared UI primitives belong in `src/components/common`, and hooks in `src/hooks`. Static assets (fonts, icons, manifest) live in `public/`. Long-form planning notes stay in `plans/teleprompter-plan.md`; update it whenever scope changes. Tests sit next to the code they cover (`Component.test.tsx`) or under `tests/` for broader flows. Configuration such as Vite, ESLint, and Tailwind files remain at the repo root for easy visibility.
@@ -36,3 +38,7 @@ Store secrets or webcast-specific tokens in `.env.local` (ignored by git); refer
 - Netlify hosts production; build settings live in `netlify.toml`.
 - GitHub Actions (`.github/workflows/ci.yml`) runs lint/test/build and then deploys to Netlify on `main` pushes. Configure `NETLIFY_SITE_ID` + `NETLIFY_AUTH_TOKEN` secrets.
 - Document every deploy in `docs/releases.md` and summarize in `CHANGELOG.md`.
+
+## Operational Notes
+
+- The working copy may enforce sandboxing on git metadata. Elevate permissions (obtain approval/escalation) before running any command that writes outside the workspace defaults—most notably `git add`, `git commit`, or other git operations that touch `.git/`.

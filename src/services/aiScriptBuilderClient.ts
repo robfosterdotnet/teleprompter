@@ -63,15 +63,16 @@ const hasErrorMessage = (value: unknown): value is ErrorPayload =>
   typeof value === 'object' && value !== null && 'error' in value
 
 const normalizeError = async (response: Response) => {
+  let detailedMessage: string | null = null
   try {
     const payload: unknown = await response.json()
     if (hasErrorMessage(payload) && typeof payload.error?.message === 'string') {
-      throw new Error(payload.error.message)
+      detailedMessage = payload.error.message
     }
   } catch {
     // fall through
   }
-  throw new Error(`Request failed with status ${response.status}`)
+  throw new Error(detailedMessage ?? `Request failed with status ${response.status}`)
 }
 
 export async function generateScript(
