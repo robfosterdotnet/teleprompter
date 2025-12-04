@@ -49,7 +49,7 @@ const getDefaultState = (): TeleprompterState => {
       activeSegmentId: fallbackSegmentId,
     },
     preferences: {
-      theme: 'dark',
+      theme: 'default',
       fontSizeScale: DEFAULT_FONT_SIZE,
       lineHeightScale: DEFAULT_LINE_HEIGHT,
       dyslexicFontEnabled: false,

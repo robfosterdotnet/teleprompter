@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/consistent-type-imports */
 import type { ScriptSource } from '@/types/script'
+import type * as MammothBrowser from 'mammoth/mammoth.browser'
 import { XMLParser } from 'fast-xml-parser'
 import JSZip from 'jszip'
 import { marked } from 'marked'
@@ -120,11 +120,11 @@ const extractMarkdown = async (file: File) => {
   return flatten(tokens).join('\n')
 }
 
-type MammothModule = typeof import('mammoth/mammoth.browser')
+type MammothModule = typeof MammothBrowser
 let mammothModulePromise: Promise<MammothModule> | null = null
 
 const loadMammoth = () => {
-  mammothModulePromise ??= import('mammoth/mammoth.browser')
+  mammothModulePromise ??= import('mammoth/mammoth.browser') as Promise<MammothModule>
   return mammothModulePromise
 }
 
@@ -137,33 +137,52 @@ const htmlToPlainText = (html: string) => {
   return doc.body.textContent ?? ''
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null
+
 const extractDocxFallback = async (file: File) => {
   const zip = await JSZip.loadAsync(await file.arrayBuffer())
   const documentXml = await zip.file('word/document.xml')?.async('string')
   if (!documentXml) {
     throw new Error('DOCX archive is missing word/document.xml')
   }
-  const parsed = xmlParser.parse(documentXml)
-  const paragraphs: unknown[] = parsed?.['w:document']?.['w:body']?.['w:p'] ?? []
-  const collectRuns = (run: any): string => {
+  const parsed: unknown = xmlParser.parse(documentXml)
+  const documentNode =
+    isRecord(parsed) && isRecord(parsed['w:document']) ? parsed['w:document'] : null
+  const bodyNode =
+    documentNode && isRecord(documentNode['w:body']) ? documentNode['w:body'] : null
+  const rawParagraphs = bodyNode?.['w:p']
+  const paragraphs: unknown[] = Array.isArray(rawParagraphs)
+    ? rawParagraphs
+    : rawParagraphs
+      ? [rawParagraphs]
+      : []
+  const collectRuns = (run: unknown): string => {
     if (!run) return ''
     if (Array.isArray(run)) {
       return run.map(collectRuns).join('')
     }
-    if (typeof run === 'object' && 'w:t' in run) {
-      const text = run['w:t']
-      if (typeof text === 'string') return text
-      if (text && typeof text === 'object' && 'text' in text) {
-        return String(text.text)
+    if (isRecord(run)) {
+      if ('w:t' in run) {
+        const text = run['w:t']
+        if (typeof text === 'string') return text
+        if (isRecord(text) && 'text' in text) {
+          return String(text.text)
+        }
+      }
+      if ('text' in run) {
+        return String(run.text)
       }
     }
-    if (typeof run === 'object' && 'text' in run) {
-      return String(run.text)
-    }
-    return ''
+    return typeof run === 'string' ? run : ''
   }
   const sections = (Array.isArray(paragraphs) ? paragraphs : [paragraphs]).map(
-    (paragraph) => collectRuns(paragraph?.['w:r'] ?? paragraph),
+    (paragraph) => {
+      if (isRecord(paragraph) && 'w:r' in paragraph) {
+        return collectRuns(paragraph['w:r'])
+      }
+      return collectRuns(paragraph)
+    },
   )
   return sections.filter(Boolean).join('\n\n')
 }
@@ -190,24 +209,34 @@ const extractPptx = async (file: File) => {
   for (const slideName of slideFiles) {
     const xml = await zip.file(slideName)?.async('string')
     if (!xml) continue
-    const parsed = xmlParser.parse(xml)
-    const shapes = parsed?.['p:sld']?.['p:cSld']?.['p:spTree'] ?? {}
-    const collectText = (node: any): string => {
+    const parsed: unknown = xmlParser.parse(xml)
+    const slideNode =
+      isRecord(parsed) && isRecord(parsed['p:sld']) ? parsed['p:sld'] : null
+    const contentNode =
+      slideNode && isRecord(slideNode['p:cSld']) ? slideNode['p:cSld'] : null
+    const shapes =
+      contentNode && isRecord(contentNode['p:spTree']) ? contentNode['p:spTree'] : {}
+    const collectText = (node: unknown): string => {
       if (!node) return ''
       if (Array.isArray(node)) {
         return node.map(collectText).join(' ')
       }
-      if (typeof node === 'object') {
+      if (typeof node === 'string' || typeof node === 'number') {
+        return String(node)
+      }
+      if (isRecord(node)) {
         if ('a:t' in node) {
-          return Array.isArray(node['a:t'])
-            ? node['a:t'].map((value) => String(value?.text ?? value)).join(' ')
-            : String(node['a:t']?.text ?? node['a:t'] ?? '')
+          const textNode = node['a:t']
+          if (Array.isArray(textNode)) {
+            return textNode.map((value) => collectText(value)).join(' ')
+          }
+          return collectText(textNode)
         }
         return Object.values(node)
           .map((value) => collectText(value))
           .join(' ')
       }
-      return typeof node === 'string' ? node : ''
+      return ''
     }
     slides.push(collectText(shapes))
   }
@@ -226,10 +255,8 @@ const extractPdf = async (file: File) => {
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber)
     const content = await page.getTextContent()
-    const textItems = content.items
-      .map((item) =>
-        'str' in item ? item.str : 'text' in (item as never) ? (item as never).text : '',
-      )
+    const textItems = (content.items as { str?: string; text?: string }[])
+      .map((item) => item?.str ?? item?.text ?? '')
       .filter(Boolean)
     pages.push(textItems.join(' '))
   }

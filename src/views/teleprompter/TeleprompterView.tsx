@@ -45,7 +45,12 @@ export function TeleprompterView() {
 
   useEffect(() => {
     const themeClass = `theme-${preferences.theme}`
-    document.body.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast')
+    document.body.classList.remove(
+      'theme-default',
+      'theme-dark',
+      'theme-light',
+      'theme-high-contrast',
+    )
     document.body.classList.add(themeClass)
     return () => {
       document.body.classList.remove(themeClass)

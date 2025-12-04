@@ -13,14 +13,14 @@ describe('ThemeSwitcher', () => {
     const user = userEvent.setup()
     render(<ThemeSwitcher />)
 
+    const defaultButton = screen.getByRole('button', { name: /default/i })
     const darkButton = screen.getByRole('button', { name: /dark/i })
-    const lightButton = screen.getByRole('button', { name: /light/i })
 
+    expect(defaultButton).toHaveAttribute('aria-pressed', 'true')
+    expect(darkButton).toHaveAttribute('aria-pressed', 'false')
+
+    await user.click(darkButton)
+    expect(useTeleprompterStore.getState().preferences.theme).toBe('dark')
     expect(darkButton).toHaveAttribute('aria-pressed', 'true')
-    expect(lightButton).toHaveAttribute('aria-pressed', 'false')
-
-    await user.click(lightButton)
-    expect(useTeleprompterStore.getState().preferences.theme).toBe('light')
-    expect(lightButton).toHaveAttribute('aria-pressed', 'true')
   })
 })

@@ -2,6 +2,7 @@ import type { ThemeName } from '@/types/teleprompter'
 import { useTeleprompterStore } from '@/store/teleprompterStore'
 
 const THEMES: { label: string; value: ThemeName }[] = [
+  { label: 'Default', value: 'default' },
   { label: 'Dark', value: 'dark' },
   { label: 'Light', value: 'light' },
   { label: 'High contrast', value: 'high-contrast' },

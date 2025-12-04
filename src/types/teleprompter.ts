@@ -1,6 +1,6 @@
 import type { Script, SegmentId } from '@/types/script'
 
-export type ThemeName = 'light' | 'dark' | 'high-contrast'
+export type ThemeName = 'default' | 'dark' | 'light' | 'high-contrast'
 
 export interface TeleprompterPreferences {
   theme: ThemeName

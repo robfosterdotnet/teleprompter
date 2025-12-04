@@ -3,11 +3,10 @@
   display: grid;
   gap: 1.5rem;
   padding: 2rem clamp(1rem, 4vw, 3rem);
-  background: radial-gradient(
-    circle at top,
-    var(--color-bg) 0%,
-    var(--color-bg-secondary) 60%
-  );
+  background:
+    radial-gradient(circle at 20% 25%, rgba(110, 220, 185, 0.14), transparent 45%),
+    radial-gradient(circle at 80% 5%, rgba(134, 188, 37, 0.2), transparent 52%),
+    linear-gradient(155deg, var(--color-bg) 0%, var(--color-bg-secondary) 70%);
   color: var(--color-text);
   grid-template-columns: minmax(0, 3fr) minmax(280px, 1.1fr);
 }
@@ -41,16 +40,21 @@
 .control-pane {
   border-radius: 1.5rem;
   padding: 1.75rem;
-  background: var(--color-pane-bg);
+  background: var(--panel-surface-strong);
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
   transition:
     background 150ms ease,
     border-color 150ms ease,
     color 150ms ease;
   transform-origin: center;
+}
+
+.control-pane {
+  background: var(--panel-surface-medium);
 }
 
 .script-pane[data-mirror-x='true'] {
@@ -83,18 +87,20 @@
 .segment-card {
   padding: 1rem 1.25rem;
   border-radius: 1rem;
-  background: var(--color-accent-soft);
+  background: var(--panel-surface-soft);
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
   transition:
     border-color 150ms ease,
-    box-shadow 150ms ease;
+    box-shadow 150ms ease,
+    transform 120ms ease;
 }
 
 .segment-card--active {
-  border-color: var(--color-warning);
-  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35);
+  border-color: var(--color-accent);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
 }
 
 .segment-label {
@@ -102,7 +108,7 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 0.35rem;
-  color: var(--color-accent);
+  color: var(--color-eyebrow);
 }
 
 .segment-script {
@@ -140,10 +146,10 @@
   margin-top: 1.5rem;
   padding: 1.25rem;
   border-radius: 1rem;
-  background: var(--color-accent-soft);
+  background: var(--panel-surface-soft);
   border-width: 1px;
   border-style: dashed;
-  border-color: var(--color-accent);
+  border-color: var(--color-pane-border);
 }
 
 .theme-switcher,
@@ -154,7 +160,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel-surface-soft);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -171,7 +177,7 @@
 .mirror-button-row button {
   border-width: 1px;
   border-style: solid;
-  border-color: var(--color-pane-border);
+  border-color: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   padding: 0.45rem 0.95rem;
   background: transparent;
@@ -187,7 +193,7 @@
 .mirror-button-row button[aria-pressed='true'] {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  color: #000;
+  color: #001632;
 }
 
 .ghost-button {
@@ -207,7 +213,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--panel-surface-strong);
   color: var(--color-text);
   padding: 1rem;
   resize: vertical;
@@ -228,19 +234,24 @@
 }
 
 .control-buttons button {
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   padding: 0.65rem 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  background: var(--color-accent-soft);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--color-text);
-  transition: background 150ms ease;
+  transition:
+    background 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
 }
 
 .control-buttons button:hover {
   background: var(--color-accent);
-  color: #000;
+  border-color: var(--color-accent);
+  color: #001632;
 }
 
 .speed-group {
@@ -258,7 +269,7 @@
 
 .segment-selector select {
   border-radius: 0.75rem;
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--panel-surface-strong);
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
@@ -273,7 +284,7 @@
   gap: 1rem;
   padding: 1.25rem;
   border-radius: 1rem;
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel-surface-soft);
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
@@ -314,7 +325,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--panel-surface-medium);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -332,12 +343,12 @@
 }
 
 .timer-panel button {
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   padding: 0.35rem 0.8rem;
   cursor: pointer;
-  background: rgba(248, 113, 113, 0.2);
-  color: #fecaca;
+  background: rgba(134, 188, 37, 0.15);
+  color: var(--color-text);
 }
 
 .timer-panel dl {
@@ -368,7 +379,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel-surface-soft);
 }
 
 .segment-navigator h3 {
@@ -390,7 +401,7 @@
   border-style: solid;
   border-color: var(--color-pane-border);
   border-radius: 0.85rem;
-  background: transparent;
+  background: var(--panel-surface-faint);
   color: inherit;
   padding: 0.5rem 0.75rem;
   display: flex;
@@ -402,7 +413,7 @@
 
 .segment-navigator button[aria-current='true'] {
   border-color: var(--color-warning);
-  background: rgba(251, 191, 36, 0.15);
+  background: rgba(134, 188, 37, 0.18);
 }
 
 .segment-index {
@@ -435,7 +446,7 @@
   border-width: 1px;
   border-style: solid;
   border-color: var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--panel-surface-medium);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -478,11 +489,10 @@
 .workspace-shell {
   min-height: 100vh;
   padding: 1.5rem clamp(1rem, 4vw, 3rem);
-  background: radial-gradient(
-    circle at top,
-    var(--color-bg) 0%,
-    var(--color-bg-secondary) 65%
-  );
+  background:
+    radial-gradient(circle at 25% 20%, rgba(110, 220, 185, 0.14), transparent 42%),
+    radial-gradient(circle at 78% 3%, rgba(134, 188, 37, 0.12), transparent 48%),
+    linear-gradient(155deg, var(--color-bg) 0%, var(--color-bg-secondary) 65%);
   color: var(--color-text);
   display: flex;
   flex-direction: column;
@@ -492,7 +502,7 @@
 .workspace-nav {
   display: inline-flex;
   gap: 0.5rem;
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel-surface-soft);
   border-radius: 999px;
   padding: 0.35rem;
   border: 1px solid var(--color-pane-border);
@@ -522,7 +532,11 @@
 
 .workspace-nav button.active {
   background: var(--color-accent);
-  color: #000;
+  color: #ffffff;
+}
+
+.workspace-nav button.active small {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .builder-shell {
@@ -540,16 +554,16 @@
 .builder-panel {
   border-radius: 1.5rem;
   padding: 1.75rem;
-  background: rgba(15, 23, 42, 0.9);
+  background: var(--panel-surface-strong);
   border: 1px solid var(--color-pane-border);
-  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.45);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 .builder-panel--output {
-  background: rgba(2, 6, 23, 0.85);
+  background: var(--panel-surface-medium);
 }
 
 .dropzone {
@@ -558,7 +572,7 @@
   padding: 1.5rem;
   text-align: center;
   cursor: pointer;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--panel-surface-faint);
 }
 
 .dropzone__title {
@@ -587,7 +601,7 @@
   align-items: center;
   padding: 0.9rem 1rem;
   border-radius: 1rem;
-  background: rgba(15, 23, 42, 0.65);
+  background: var(--panel-surface-muted);
   border: 1px solid var(--color-pane-border);
   gap: 1rem;
 }
@@ -655,7 +669,7 @@
   margin-top: 0.35rem;
   border-radius: 0.75rem;
   border: 1px solid var(--color-pane-border);
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--panel-surface-soft);
   color: var(--color-text);
   padding: 0.6rem 0.8rem;
   font: inherit;
@@ -721,7 +735,7 @@
   border-radius: 999px;
   padding: 0.45rem 1rem;
   background: var(--color-accent);
-  color: #000;
+  color: #001632;
   cursor: pointer;
 }
 
@@ -730,7 +744,7 @@
   border-radius: 1rem;
   border: 1px solid var(--color-pane-border);
   padding: 1rem;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--panel-surface-faint);
 }
 
 .output-preview__stream {
@@ -785,7 +799,7 @@
   border-radius: 1rem;
   padding: 0.75rem 1rem;
   align-items: center;
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--panel-surface-faint);
 }
 
 .library-drawer__title {

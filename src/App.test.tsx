@@ -37,10 +37,10 @@ describe('App', () => {
     const user = userEvent.setup()
     render(<App />)
 
+    expect(document.body.classList.contains('theme-default')).toBe(true)
+    const darkButton = screen.getByRole('button', { name: /dark/i })
+    await user.click(darkButton)
     expect(document.body.classList.contains('theme-dark')).toBe(true)
-    const lightButton = screen.getByRole('button', { name: /light/i })
-    await user.click(lightButton)
-    expect(document.body.classList.contains('theme-light')).toBe(true)
   })
 
   it('toggles mirror attributes on the script pane', async () => {

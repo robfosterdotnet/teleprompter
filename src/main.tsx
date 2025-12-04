@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 
 if (typeof document !== 'undefined') {
-  document.body.classList.add('theme-dark')
+  document.body.classList.add('theme-default')
 }
 
 createRoot(document.getElementById('root')!).render(

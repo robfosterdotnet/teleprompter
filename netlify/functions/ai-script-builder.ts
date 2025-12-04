@@ -346,7 +346,7 @@ const handler = stream((event) => {
     bodyStream.push(null)
   })
 
-  return {
+  return Promise.resolve({
     statusCode: 200,
     headers: {
       'Content-Type': 'text/event-stream',
@@ -354,7 +354,7 @@ const handler = stream((event) => {
       Connection: 'keep-alive',
     },
     body: bodyStream,
-  }
+  })
 })
 
 export { handler }
